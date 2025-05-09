@@ -13,15 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Audio {
-  id           String   @id @default(uuid())
-  title        String
-  description  String?
-  publicId     String
-  originalSize String
-  duration     String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model User {
+  id          String   @id @default(cuid())
+  clerkUserId String   @unique
+  userName    String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  // Define the relationship with the Lyrics model
+  records Record[]
+}
+
+model Record {
+  id        String   @id @default(cuid())
+  userId    String
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      String?
+  createdAt DateTime @default(now())
+  fileName  String?
 }

@@ -1,10 +1,11 @@
 import { FC, ReactNode } from "react";
 import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 // import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import Link from "next/link";
+import UserInfo from "@/components/user-panel";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -32,11 +33,26 @@ const RootLayout: FC<Readonly<RootLayoutProps>> = ({ children }) => {
         <body className={`${inter.variable} antialiased`}>
           <div className="min-h-screen flex flex-col bg-gray-900 text-gray-200">
             {/* Header */}
-            <header className="bg-gray-800 p-4 text-center text-purple-400 text-2xl font-bold">
-              Audio-to-Text App
+            <header className="bg-gray-800 p-4 flex justify-between items-center">
+              <Link href="/" className="text-purple-400 text-2xl font-bold">
+                Audio-to-Text App
+              </Link>
+              <SignedIn>
+                <UserInfo />
+              </SignedIn>
+              <SignedOut>
+                <Link
+                  href="/sign-in"
+                  className="text-sm text-gray-400 hover:text-purple-400 underline transition duration-300 ease-in-out"
+                >
+                  Sign In
+                </Link>
+              </SignedOut>
             </header>
+
             {/* Main content */}
-            <div className="flex flex-1 p-6">{children}</div>
+            <main className="flex flex-1 p-6">{children}</main>
+
             {/* Footer */}
             <footer className="bg-gray-800 p-4 text-center text-gray-400 text-sm">
               &copy; 2024 Audio-to-Text App. Coded by{" "}
